@@ -33,6 +33,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+    public function favourites () {
+        return $this->hasMany(Favourite::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -45,4 +50,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+   
 }

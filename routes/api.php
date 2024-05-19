@@ -4,14 +4,14 @@ use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 
 // auth
@@ -27,6 +27,10 @@ Route::prefix('/v1/')->group(function () {
     // admin auth
     Route::post('admin-register', [AdminController::class, 'register']);
     Route::post('admin-login', [AdminController::class, 'login']);
+
+    Route::get('all-users', function (Request $request) {
+        return DB::table('users')->get();
+    })->middleware(['auth:sanctum']);
 
 
     // music
@@ -54,4 +58,11 @@ Route::prefix('/v1/')->group(function () {
         Route::patch('/{id}', 'update')->middleware(['auth:sanctum']);
         Route::delete('/{id}', 'destroy')->middleware(['auth:sanctum']);
     });
+
+    // favourite
+    Route::prefix('/favourite')->middleware(['auth:sanctum'])->controller(FavouriteController::class)->group(function () {
+        Route::get('/','index');
+        Route::post('/','store');
+    } );
+
 });

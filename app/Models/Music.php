@@ -19,6 +19,10 @@ class Music extends Model
      return    $this->belongsTo(Album::class);
     }
 
+    public function favourite () {
+        return $this->hasMany(Favourite::class)  ;
+    }
+
     protected $fillable = [
         'name',
         'song_mp3',
