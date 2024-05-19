@@ -1,0 +1,7 @@
+> cp .env .env.example
+> composer install
+> php artisan key:generate
+
+.env မှာ set up လုပ်ပေး
+php artisan migrate
+
