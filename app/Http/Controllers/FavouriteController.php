@@ -8,6 +8,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPSTORM_META\map;
+
 class FavouriteController extends Controller
 {
     /**
@@ -16,7 +18,6 @@ class FavouriteController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $music = Music::all();
        
         $favourites = $user->favourites()->with('music')->get();
 
@@ -24,7 +25,22 @@ class FavouriteController extends Controller
             return $favourite->music;
         });
 
-        return  $musics;
+         
+
+        return  response()->json([
+            'data' => $musics->map(function ($mus) {
+              return [
+                'id' => $mus->id,
+                'name' => $mus->name,
+                'song_mp3' => $mus->song_mp3,
+                'song_mp3' => url(str_replace('public', 'storage', $mus->song_mp3)),
+                'song_image' => url(str_replace('public', 'storage', $mus->song_image)),
+                'created_at' => $mus->created_at,
+                'updated_at' => $mus->updated_at,
+              ];
+            }  ),
+            'username'  => $user->username
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,12 +11,25 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::all();
+        $user = User::query();
+
+        if($request->search){
+            $search = $request->search;
+           $user->where('username','like',"%$search%");
+        }
+
+        $user = $user->paginate($request->size);
+
         return response()->json([
             'message' => 'All user list',
-            'data' => $user
+            'data' => UserResource::collection($user),
+            'pagination' => [
+                'page' => $user->currentPage(),
+                'totalPage' => $user->total(),
+                'size' => $user->perPage(),
+            ]
         ]);
     }
 
@@ -49,5 +63,12 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function me(){
+        return response()->json([
+            'data' => auth()->user(),
+            'message' => "Fetching Successfullly"
+        ]);
     }
 }

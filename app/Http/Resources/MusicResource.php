@@ -23,8 +23,8 @@ class MusicResource extends JsonResource
         return [
             'id' => $this->id,
             "name" => $this->name,
-            'song_mp3' => url(str_replace('public', 'storage', $this->song_mp3)),
             'description' => $this->description,
+            'song_mp3' => url(str_replace('public', 'storage', $this->song_mp3)),
             'song_image' => url(str_replace('public', 'storage', $this->song_image)),
             'artist' => $artist->artist,
             'artist_id' => $artist->id,

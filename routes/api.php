@@ -28,12 +28,10 @@ Route::prefix('/v1/')->group(function () {
     Route::post('admin-register', [AdminController::class, 'register']);
     Route::post('admin-login', [AdminController::class, 'login']);
 
-    Route::get('all-users', function (Request $request) {
-        return DB::table('users')->get();
-    })->middleware(['auth:sanctum']);
+    Route::get('all-users', [UserController::class,'index'])->middleware(['auth:sanctum']);
 
 
-    // music
+    // musi
     Route::prefix('/music')->controller(MusicController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store')->middleware(['auth:sanctum']);
@@ -45,7 +43,7 @@ Route::prefix('/v1/')->group(function () {
     Route::prefix('/artist')->controller(ArtistController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store')->middleware(['auth:sanctum']);
-        Route::patch('/{id}', 'update')->middleware(['auth:sanctum']);
+        Route::put('/{id}', 'update')->middleware(['auth:sanctum']);
         Route::get('/{id}', 'show');
         Route::delete('/{id}', 'destroy')->middleware(['auth:sanctum']);
     });
@@ -55,7 +53,7 @@ Route::prefix('/v1/')->group(function () {
         Route::post('/', 'store')->middleware(['auth:sanctum']);
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
-        Route::patch('/{id}', 'update')->middleware(['auth:sanctum']);
+        Route::put('/{id}', 'update')->middleware(['auth:sanctum']);
         Route::delete('/{id}', 'destroy')->middleware(['auth:sanctum']);
     });
 
@@ -65,4 +63,7 @@ Route::prefix('/v1/')->group(function () {
         Route::post('/','store');
     } );
 
+    // logout
+    Route::get('/logout',[AuthController::class,'logout'])->middleware(['auth:sanctum']);
+    Route::get('/me',[UserController::class,'me'])->middleware(['auth:sanctum']);
 });
