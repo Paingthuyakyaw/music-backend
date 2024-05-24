@@ -1,7 +1,23 @@
-> cp .env .env.example
+
+// === project အသစ် run မယ်ဆိုရင် (music - backend)
+> cp .env.example .env
 > composer install
 > php artisan key:generate
 
-.env မှာ set up လုပ်ပေး
-php artisan migrate
+> .env မှာ database set up လုပ်ပေး
+>  php artisan migrate   (ဒါက database run တာ)
+> php artisan storage:link (image တွေပေါ်ဖို့)
+
+> php artisan serve (server run နည်း)
+
+(တကယ်လို့ err တခုခုဖြစ်ရင် database တွေ reset ချပစ်လိုက်ပါ)
+> php artisan migrate:refresh 
+
+
+//(music - admin)
+>npm i  
+>npm run dev (server run နည်း)
+
+
+
 

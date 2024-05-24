@@ -39,6 +39,7 @@ class FavouriteController extends Controller
                 'updated_at' => $mus->updated_at,
               ];
             }  ),
+            
             'username'  => $user->username
         ]);
     }
@@ -108,6 +109,25 @@ class FavouriteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $favourite = Favourite::where('user_id', Auth::id())->where('music_id', $id)->first();
+
+            if (!$favourite) {
+                return response()->json([
+                    'message' => 'Favourite not found'
+                ], 404);
+            }
+
+            $favourite->delete();
+
+            return response()->json([
+                'message' => 'Favourite deleted successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete favourite',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

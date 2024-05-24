@@ -61,9 +61,11 @@ Route::prefix('/v1/')->group(function () {
     Route::prefix('/favourite')->middleware(['auth:sanctum'])->controller(FavouriteController::class)->group(function () {
         Route::get('/','index');
         Route::post('/','store');
+        Route::delete('/{id}','destroy');
     } );
 
     // logout
     Route::get('/logout',[AuthController::class,'logout'])->middleware(['auth:sanctum']);
     Route::get('/me',[UserController::class,'me'])->middleware(['auth:sanctum']);
+
 });
